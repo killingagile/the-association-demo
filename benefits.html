@@ -26,6 +26,7 @@
       <ul class="nav-menu" id="publicNav">
         <li><a href="index.html" class="nav-link">Home</a></li>
         <li><a href="benefits.html" class="nav-link active">Benefits</a></li>
+        <li><a href="pricing.html" class="nav-link">Pricing</a></li>
         <li><a href="support.html" class="nav-link">Support</a></li>
       </ul>
       
@@ -33,6 +34,7 @@
       <ul class="nav-menu" id="memberNav" style="display: none;">
         <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
         <li><a href="benefits.html" class="nav-link active">Benefits</a></li>
+        <li><a href="pricing.html" class="nav-link">Pricing</a></li>
         <li><a href="account.html" class="nav-link">Account</a></li>
         <li><a href="support.html" class="nav-link">Support</a></li>
         <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
@@ -95,6 +97,7 @@
           <ul class="footer-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
             <li><a href="support.html">Support</a></li>
           </ul>
         </div>
@@ -177,7 +180,8 @@
           
           categoryData.benefits.forEach(benefit => {
             html += `
-              <div class="benefit-card">
+              <div class="benefit-card ${benefit.isAddOn ? 'benefit-card-addon' : ''}">
+                ${benefit.isAddOn ? `<span class="badge badge-warning" style="position: absolute; top: 12px; right: 12px;">OPTIONAL ADD-ON</span>` : ''}
                 <div class="benefit-icon">${benefit.icon}</div>
                 <h3 class="benefit-title">${benefit.title}</h3>
                 <p class="benefit-description">${benefit.description}</p>

@@ -337,24 +337,26 @@ const BENEFITS = [
     category: 'insurance',
     categoryName: 'Insurance',
     icon: '🏢',
-    title: 'Public liability (PL)',
-    description: 'Public liability cover for accidental third-party injury or accidental damage to tangible property arising from your business activities (subject to policy terms).',
+    title: 'Public liability (PL) - ADD-ON',
+    description: '<strong>OPTIONAL ADD-ON:</strong> Public liability cover for accidental third-party injury or accidental damage to tangible property arising from your business activities (subject to policy terms).',
     howItWorks: 'This is the "real world" liability cover: if someone is injured or property is damaged because of your business activities and you become legally liable, the insurer handles defence and pays covered damages within the policy terms. The policy limit is set by your schedule at <strong>£1m</strong>. If an incident happens, you notify as soon as possible and forward any correspondence immediately, and you do not admit liability, offer to settle, or make payments without written consent from the insurer, because that can compromise cover.',
-    redemption: 'Your PL cover is automatically active. Contact insurance@ee-association.com for policy documents or to make a claim.',
+    redemption: 'Available as an optional add-on. Contact insurance@ee-association.com to add PL cover to your membership.',
     provider: 'Insurance Provider',
-    value: '£1m limit'
+    value: '£1m limit (add-on)',
+    isAddOn: true
   },
   {
     id: 'employers-liability',
     category: 'insurance',
     categoryName: 'Insurance',
     icon: '👥',
-    title: 'Employers\' liability (EL) add-on',
-    description: 'Employers\' liability cover for claims from employees for workplace injury or illness (subject to policy terms).',
+    title: 'Employers\' liability (EL) - ADD-ON',
+    description: '<strong>OPTIONAL ADD-ON:</strong> Employers\' liability cover for claims from employees for workplace injury or illness (subject to policy terms).',
     howItWorks: 'If you employ someone and they allege an injury or illness connected to their employment, EL responds to your legal liability within the policy terms and the schedule limit. Operationally it behaves like PL: notify early, forward claim documents immediately, and avoid admissions or payments without consent so the insurer can manage defence and settlement properly. This is typically added onto a public liability policy rather than sold standalone, which matches how you\'ve positioned it as an add-on. The policy limit is set by your schedule at <strong>£10m</strong>.',
-    redemption: 'Available with EL add-on. Contact insurance@ee-association.com to upgrade your policy.',
+    redemption: 'Available as an optional add-on. Contact insurance@ee-association.com to add EL cover to your membership.',
     provider: 'Insurance Provider',
-    value: 'Up to £10m (with add-on)'
+    value: 'Up to £10m (add-on)',
+    isAddOn: true
   },
   {
     id: 'gdpr-data-protection',

@@ -760,11 +760,24 @@
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   transition: all var(--transition-base);
+  position: relative;
 }
 
 .benefit-card:hover {
   border-color: var(--ee-blue);
   box-shadow: var(--shadow-md);
+}
+
+.benefit-card-addon {
+  background: #fffbf0;
+  border: 2px solid #fbbf24;
+  border-style: dashed;
+}
+
+.benefit-card-addon:hover {
+  border-color: #f59e0b;
+  border-style: dashed;
+  box-shadow: 0 4px 6px -1px rgba(251, 191, 36, 0.2), 0 2px 4px -1px rgba(251, 191, 36, 0.1);
 }
 
 .benefit-icon {

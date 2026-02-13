@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .pricing-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-4);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 12px;
+      padding: var(--space-8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid var(--gray-200);
+      position: relative;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      cursor: pointer;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .pricing-card.featured {
+      /* Featured card styling - no special border */
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .pricing-card.selected {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 2px solid var(--primary);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .pricing-card.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      z-index: 11;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      animation: checkmarkPop 0.3s ease-out;
+    }
+
+    @keyframes checkmarkPop {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: var(--space-1) var(--space-4);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      z-index: 5;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: var(--space-6);
+      position: relative;
+    }
+
+    .pricing-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: var(--space-2);
+    }
+
+    .pricing-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .pricing-period {
+      color: var(--gray-600);
+      font-size: 1rem;
+    }
+
+    .pricing-description {
+      text-align: center;
+      color: var(--gray-600);
+      margin-bottom: var(--space-6);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--space-6) 0;
+      flex-grow: 1;
+    }
+
+    .pricing-features li {
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: flex-start;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: var(--space-3);
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+
+    .feature-text {
+      color: var(--gray-700);
+    }
+
+    .pricing-cta {
+      width: 100%;
+      padding: var(--space-4);
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+
+    .pricing-cta.primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .pricing-cta.primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .pricing-cta.secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .pricing-cta.secondary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .pricing-intro {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto var(--space-8) auto;
+    }
+
+    .pricing-intro h2 {
+      font-size: 1.5rem;
+      color: var(--gray-900);
+      margin-bottom: var(--space-4);
+    }
+
+    .pricing-intro p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    /* Selected badge overlay */
+    .pricing-card.selected .pricing-title::after {
+      content: '✓ Selected';
+      display: inline-block;
+      margin-left: var(--space-3);
+      padding: 4px 12px;
+      background: var(--success);
+      color: white;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      vertical-align: middle;
+      animation: checkmarkPop 0.3s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-price {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <!-- Public Navigation -->
+      <ul class="nav-menu" id="publicNav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="pricing.html" class="nav-link active">Pricing</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <!-- Member Navigation -->
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="pricing.html" class="nav-link active">Pricing</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+        <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
+      </ul>
+      
+      <!-- Suspended Navigation -->
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <h1>Membership Pricing</h1>
+      <p class="subtitle">Choose the package that best fits your business needs</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="pricing-container">
+      
+      <!-- Intro Section -->
+      <div class="pricing-intro">
+        <h2>Simple, transparent pricing</h2>
+        <p>All packages include professional indemnity insurance, legal & tax protection, health & wellbeing support, professional development, and lifestyle savings. Add public and employers' liability insurance based on your business requirements.</p>
+      </div>
+
+      <!-- Pricing Grid -->
+      <div class="pricing-grid">
+        
+        <!-- Package 1: Limited Company Core -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title">Limited Company Core</h3>
+            <div class="pricing-price">£25</div>
+            <div class="pricing-period">per month</div>
+          </div>
+          
+          <p class="pricing-description">
+            Comprehensive professional insurance, legal protection, health & wellbeing support, and professional development benefits
+          </p>
+          
+          <ul class="pricing-features">
+            <li>
+              <span class="feature-icon">🛡️</span>
+              <span class="feature-text">Professional indemnity insurance (£1m)</span>
+            </li>
+            <li>
+              <span class="feature-icon">⚖️</span>
+              <span class="feature-text">Legal cover (up to £50k)</span>
+            </li>
+            <li>
+              <span class="feature-icon">📋</span>
+              <span class="feature-text">Tax & VAT investigation cover (£50k)</span>
+            </li>
+            <li>
+              <span class="feature-icon">📞</span>
+              <span class="feature-text">24/7 tax and legal helplines</span>
+            </li>
+            <li>
+              <span class="feature-icon">🔐</span>
+              <span class="feature-text">GDPR & data protection liability</span>
+            </li>
+            <li>
+              <span class="feature-icon">👨‍⚕️</span>
+              <span class="feature-text">Unlimited 24/7 virtual GP service</span>
+            </li>
+            <li>
+              <span class="feature-icon">🧠</span>
+              <span class="feature-text">Mental health therapy (8 sessions)</span>
+            </li>
+            <li>
+              <span class="feature-icon">🌟</span>
+              <span class="feature-text">Unlimited life coaching</span>
+            </li>
+            <li>
+              <span class="feature-icon">🏃</span>
+              <span class="feature-text">Virtual physio service</span>
+            </li>
+            <li>
+              <span class="feature-icon">☁️</span>
+              <span class="feature-text">Cloud certification money back</span>
+            </li>
+            <li>
+              <span class="feature-icon">📚</span>
+              <span class="feature-text">Free in-house EE training</span>
+            </li>
+            <li>
+              <span class="feature-icon">🎁</span>
+              <span class="feature-text">Benefits hub with 1,500+ offers</span>
+            </li>
+          </ul>
+          
+          <button class="pricing-cta secondary">
+            Get Started
+          </button>
+        </div>
+
+        <!-- Package 2: Limited Company + Public Liability -->
+        <div class="pricing-card featured">
+          <span class="pricing-badge">MOST POPULAR</span>
+          
+          <div class="pricing-header">
+            <h3 class="pricing-title">Limited Company + Public Liability</h3>
+            <div class="pricing-price">£35</div>
+            <div class="pricing-period">per month</div>
+          </div>
+          
+          <p class="pricing-description">
+            All Core benefits plus public liability insurance (£1m) for third-party injury and property damage protection
+          </p>
+          
+          <ul class="pricing-features">
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text"><strong>Everything in Core, plus:</strong></span>
+            </li>
+            <li>
+              <span class="feature-icon">🏢</span>
+              <span class="feature-text">Public liability insurance (£1m cover)</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Third-party injury protection</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Accidental property damage cover</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Essential for client site work</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Defence costs included</span>
+            </li>
+          </ul>
+          
+          <button class="pricing-cta primary">
+            Get Started
+          </button>
+        </div>
+
+        <!-- Package 3: Limited Company + Public & Employers' Liability -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title">Limited Company + Public & Employers' Liability</h3>
+            <div class="pricing-price">£45</div>
+            <div class="pricing-period">per month</div>
+          </div>
+          
+          <p class="pricing-description">
+            Full liability protection with public liability (£1m) and employers' liability (£10m) insurance for businesses with employees
+          </p>
+          
+          <ul class="pricing-features">
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text"><strong>Everything in Public Liability, plus:</strong></span>
+            </li>
+            <li>
+              <span class="feature-icon">👥</span>
+              <span class="feature-text">Employers' liability insurance (£10m cover)</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Employee injury & illness protection</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Legal requirement if you employ staff</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Workplace incident coverage</span>
+            </li>
+            <li>
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Complete liability protection</span>
+            </li>
+          </ul>
+          
+          <button class="pricing-cta secondary">
+            Get Started
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Additional Info -->
+      <div class="pricing-intro" style="margin-top: var(--space-10);">
+        <h2>Need help choosing?</h2>
+        <p>Not sure which package is right for you? <a href="support.html">Contact our team</a> or join us on Slack at #ask-ee-association for personalized guidance.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+            <li><a href="mailto:support@ee-association.com">Email Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    // Package data
+    const packageData = {
+      'core': {
+        name: 'Limited Company Core',
+        price: 25,
+        description: 'Comprehensive professional insurance, legal protection, health & wellbeing support'
+      },
+      'public': {
+        name: 'Limited Company + Public Liability',
+        price: 35,
+        description: 'Everything in Core plus public liability insurance (£1m)'
+      },
+      'full': {
+        name: 'Limited Company + Public & Employers\' Liability',
+        price: 45,
+        description: 'Full liability protection with public and employers\' liability insurance'
+      }
+    };
+
+    // Package selection handler
+    function selectPackage(packageType, event) {
+      // Prevent event bubbling if called from button
+      if (event) {
+        event.stopPropagation();
+      }
+      
+      console.log('Selected package:', packageType);
+      
+      // Highlight the selected card
+      highlightCard(packageType);
+      
+      // Store the selected package in sessionStorage
+      sessionStorage.setItem('selectedPackage', packageType);
+      sessionStorage.setItem('selectedPackageData', JSON.stringify(packageData[packageType]));
+      
+      // Redirect after a short delay to show the selection
+      setTimeout(() => {
+        const isLoggedIn = Auth && Auth.isLoggedIn && Auth.isLoggedIn();
+        
+        if (isLoggedIn) {
+          // If logged in, redirect to account upgrade page
+          window.location.href = 'account.html?upgrade=' + packageType;
+        } else {
+          // If not logged in, redirect to registration with package parameter
+          window.location.href = 'register.html?package=' + packageType;
+        }
+      }, 300);
+    }
+
+    // Highlight selected card
+    function highlightCard(packageType) {
+      // Remove selected class from all cards
+      document.querySelectorAll('.pricing-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      
+      // Add selected class to the clicked card
+      const packageMap = {
+        'core': 0,
+        'public': 1,
+        'full': 2
+      };
+      
+      const cards = document.querySelectorAll('.pricing-card');
+      const cardIndex = packageMap[packageType];
+      if (cardIndex !== undefined && cards[cardIndex]) {
+        cards[cardIndex].classList.add('selected');
+      }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Make cards clickable
+      const cards = document.querySelectorAll('.pricing-card');
+      const packageTypes = ['core', 'public', 'full'];
+      
+      cards.forEach((card, index) => {
+        card.addEventListener('click', function(e) {
+          // Only trigger if not clicking the button directly
+          if (!e.target.classList.contains('pricing-cta')) {
+            selectPackage(packageTypes[index]);
+          }
+        });
+      });
+      
+      // Update button onclick to pass event
+      document.querySelectorAll('.pricing-cta').forEach((button, index) => {
+        const packageType = packageTypes[index];
+        button.onclick = function(e) {
+          selectPackage(packageType, e);
+        };
+      });
+      
+      // Highlight pre-selected package from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const preselectedPackage = urlParams.get('package');
+      
+      if (preselectedPackage) {
+        highlightCard(preselectedPackage);
+        
+        // Scroll to selected card
+        const packageMap = {
+          'core': 0,
+          'public': 1,
+          'full': 2
+        };
+        const cards = document.querySelectorAll('.pricing-card');
+        const cardIndex = packageMap[preselectedPackage];
+        if (cardIndex !== undefined && cards[cardIndex]) {
+          cards[cardIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+  </script>
+</body>
+</html>
