@@ -242,7 +242,7 @@
                 <span class="info-value" id="nextBillingDate">-</span>
                 
                 <span class="info-label">Monthly price</span>
-                <span class="info-value">£25.00</span>
+                <span class="info-value">£X.00</span>
               </div>
             </div>
           </div>
@@ -598,7 +598,7 @@
         invoices.push({
           date: currentDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
           description: 'Professional Membership - Monthly',
-          amount: 25.00
+          amount: 'X.00'
         });
         currentDate.setMonth(currentDate.getMonth() + 1);
       }

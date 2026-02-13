@@ -331,8 +331,8 @@
               <div class="card-body">
                 <div class="payment-summary">
                   <h4 class="mb-2" id="paymentPackageName">Professional Membership</h4>
-                  <p class="mb-2">Your first payment of <strong id="paymentAmount">£25</strong> will be processed today.</p>
-                  <p class="text-sm text-gray mb-0">You'll be charged <strong id="paymentAmountRecurring">£25</strong> on the same day each month until you cancel. You can cancel at any time; cancellation stops future payments and you'll keep access until the end of your current billing period.</p>
+                  <p class="mb-2">Your first payment of <strong id="paymentAmount">£X</strong> will be processed today.</p>
+                  <p class="text-sm text-gray mb-0">You'll be charged <strong id="paymentAmountRecurring">£X</strong> on the same day each month until you cancel. You can cancel at any time; cancellation stops future payments and you'll keep access until the end of your current billing period.</p>
                 </div>
                 
                 <h4 class="mb-4">Card Details</h4>
@@ -428,7 +428,7 @@
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="paymentAuthorised" name="paymentAuthorised" required>
                     <label class="form-check-label" for="paymentAuthorised">
-                      I authorise Equal Experts Association to charge my payment method <strong id="paymentAuthAmount">£25</strong>/month until I cancel.
+                      I authorise Equal Experts Association to charge my payment method <strong id="paymentAuthAmount">£X</strong>/month until I cancel.
                     </label>
                   </div>
                   <div class="form-error" id="paymentAuthError"></div>
@@ -555,17 +555,17 @@
     const packageData = {
       'core': {
         name: 'Limited Company Core',
-        price: 25,
+        price: 'X',
         description: 'Comprehensive professional insurance, legal protection, health & wellbeing support, and professional development benefits'
       },
       'public': {
         name: 'Limited Company + Public Liability',
-        price: 35,
+        price: 'Y',
         description: 'All Core benefits plus public liability insurance (£1m) for third-party injury and property damage protection'
       },
       'full': {
         name: 'Limited Company + Public & Employers\' Liability',
-        price: 45,
+        price: 'Z',
         description: 'Full liability protection with public and employers\' liability insurance for businesses with employees'
       }
     };
@@ -789,7 +789,7 @@
       const last4 = cardNumber.replace(/\s/g, '').slice(-4);
       
       const packageName = selectedPackage ? selectedPackage.name : 'Limited Company Core';
-      const packagePrice = selectedPackage ? selectedPackage.price : 25;
+      const packagePrice = selectedPackage ? selectedPackage.price : 'X';
       
       document.getElementById('reviewSummary').innerHTML = `
         <span class="info-label">Name</span>
@@ -857,7 +857,7 @@
         relationshipToEE: document.getElementById('relationshipToEE').value,
         package: selectedPackage ? selectedPackage.type : 'core',
         packageName: selectedPackage ? selectedPackage.name : 'Limited Company Core',
-        packagePrice: selectedPackage ? selectedPackage.price : 25,
+        packagePrice: selectedPackage ? selectedPackage.price : 'X',
         cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
         expMonth: document.getElementById('expMonth').value,
         expYear: document.getElementById('expYear').value,
