@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .registration-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: var(--space-8) 0;
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-8);
+      position: relative;
+    }
+    
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      right: 40px;
+      height: 2px;
+      background: var(--gray-200);
+      z-index: 0;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--gray-200);
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-2);
+    }
+    
+    .step.active .step-number {
+      background: var(--ee-blue);
+      color: var(--white);
+    }
+    
+    .step.completed .step-number {
+      background: var(--success);
+      color: var(--white);
+    }
+    
+    .step-label {
+      font-size: var(--font-size-sm);
+      color: var(--gray-500);
+    }
+    
+    .step.active .step-label,
+    .step.completed .step-label {
+      color: var(--gray-800);
+      font-weight: var(--font-medium);
+    }
+    
+    .form-step {
+      display: none;
+    }
+    
+    .form-step.active {
+      display: block;
+    }
+    
+    .document-links {
+      display: flex;
+      gap: var(--space-4);
+      margin: var(--space-4) 0;
+    }
+    
+    .document-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-fast);
+    }
+    
+    .document-link:hover {
+      background: var(--gray-100);
+      border-color: var(--gray-300);
+      text-decoration: none;
+    }
+    
+    .agreement-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin: var(--space-4) 0;
+    }
+    
+    .payment-summary {
+      background: var(--ee-blue-light);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+    
+    .card-input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-4);
+    }
+    
+    @media (max-width: 768px) {
+      .card-input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <div class="registration-container">
+        <h1 class="text-center mb-2">Join the EE Association</h1>
+        <p class="text-center text-gray mb-8">Create your account and start accessing member benefits</p>
+        
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+          <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <span class="step-label">Account</span>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <span class="step-label">Agreement</span>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <span class="step-label">Payment</span>
+          </div>
+          <div class="step" data-step="4">
+            <div class="step-number">4</div>
+            <span class="step-label">Complete</span>
+          </div>
+        </div>
+        
+        <!-- Registration Form -->
+        <form id="registrationForm">
+          <!-- Step 1: Account Details -->
+          <div class="form-step active" data-step="1">
+            <div class="card">
+              <div class="card-header">
+                <h3>Account Details</h3>
+              </div>
+              <div class="card-body">
+                <!-- Error Message -->
+                <div id="step1Error" class="alert alert-error" style="display: none;">
+                  <span class="alert-icon">⚠️</span>
+                  <div class="alert-content">
+                    <p class="alert-message" id="step1ErrorMessage"></p>
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="firstName" name="firstName" required maxlength="50">
+                    <div class="form-error" id="firstNameError"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Last Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="lastName" name="lastName" required maxlength="50">
+                    <div class="form-error" id="lastNameError"></div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Email Address <span class="required">*</span></label>
+                  <input type="email" class="form-input" id="email" name="email" required>
+                  <div class="form-hint">Must be on the approved membership list</div>
+                  <div class="form-error" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Password <span class="required">*</span></label>
+                  <div class="password-wrapper">
+                    <input type="password" class="form-input" id="password" name="password" required minlength="8">
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                  </div>
+                  <div class="form-hint">Minimum 8 characters, must include letter and number</div>
+                  <div class="form-error" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Confirm Password <span class="required">*</span></label>
+                  <div class="password-wrapper">
+                    <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                  </div>
+                  <div class="form-error" id="confirmPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Relationship to Equal Experts <span class="required">*</span></label>
+                  <select class="form-select" id="relationshipToEE" name="relationshipToEE" required>
+                    <option value="">(Please select)</option>
+                    <option value="Current Employee">Current Employee</option>
+                    <option value="Former Employee">Former Employee</option>
+                    <option value="Contractor">Contractor</option>
+                    <option value="Partner">Partner</option>
+                  </select>
+                  <div class="form-error" id="relationshipError"></div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-block" onclick="nextStep(1)">Continue to Agreement</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 2: Membership Agreement -->
+          <div class="form-step" data-step="2">
+            <div class="card">
+              <div class="card-header">
+                <h3>Membership Agreement</h3>
+              </div>
+              <div class="card-body">
+                <p class="mb-4">By joining the Equal Experts Association, you are becoming a member of a company limited by guarantee. Please review the governing documents before proceeding.</p>
+                
+                <div class="document-links">
+                  <a href="#" class="document-link" onclick="alert('PDF would open in production')">
+                    📄 View Membership Rules (PDF)
+                  </a>
+                  <a href="#" class="document-link" onclick="alert('PDF would open in production')">
+                    📄 View Articles of Association (PDF)
+                  </a>
+                </div>
+                
+                <div class="agreement-box">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rulesAccepted" name="rulesAccepted" required>
+                    <label class="form-check-label" for="rulesAccepted">
+                      <strong>I agree to the Membership Rules and Articles of Association.</strong>
+                      <br><br>
+                      I understand that the Equal Experts Association is a company limited by guarantee, and that if the Association is wound up while I am a member, or within one year after I cease to be a member, my liability is limited to £1.
+                    </label>
+                  </div>
+                  <div class="form-error" id="rulesError"></div>
+                </div>
+              </div>
+              <div class="card-footer" style="display: flex; gap: var(--space-4);">
+                <button type="button" class="btn btn-outline" onclick="prevStep(2)">Back</button>
+                <button type="button" class="btn btn-primary" style="flex: 1;" onclick="nextStep(2)">Continue to Payment</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3: Payment -->
+          <div class="form-step" data-step="3">
+            <div class="card">
+              <div class="card-header">
+                <h3>Payment Information</h3>
+              </div>
+              <div class="card-body">
+                <div class="payment-summary">
+                  <h4 class="mb-2">12-month commitment, paid monthly</h4>
+                  <p class="mb-2">Your first payment of <strong>£25</strong> will be processed today.</p>
+                  <p class="text-sm text-gray mb-0">You'll be charged £25 on the same day each month until you cancel. You can cancel at any time; cancellation stops future payments and you'll keep access until the end of your current billing period.</p>
+                </div>
+                
+                <h4 class="mb-4">Card Details</h4>
+                
+                <div class="form-group">
+                  <label class="form-label">Card Number <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                  <div class="form-error" id="cardNumberError"></div>
+                </div>
+                
+                <div class="card-input-row">
+                  <div class="form-group">
+                    <label class="form-label">Expiry Month <span class="required">*</span></label>
+                    <select class="form-select" id="expMonth" name="expMonth" required>
+                      <option value="">MM</option>
+                      <option value="01">01</option>
+                      <option value="02">02</option>
+                      <option value="03">03</option>
+                      <option value="04">04</option>
+                      <option value="05">05</option>
+                      <option value="06">06</option>
+                      <option value="07">07</option>
+                      <option value="08">08</option>
+                      <option value="09">09</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Expiry Year <span class="required">*</span></label>
+                    <select class="form-select" id="expYear" name="expYear" required>
+                      <option value="">YYYY</option>
+                      <option value="2026">2026</option>
+                      <option value="2027">2027</option>
+                      <option value="2028">2028</option>
+                      <option value="2029">2029</option>
+                      <option value="2030">2030</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">CVC <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="cvc" name="cvc" placeholder="123" maxlength="4" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Cardholder Name <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="cardholderName" name="cardholderName" required>
+                </div>
+                
+                <h4 class="mb-4 mt-6">Billing Address</h4>
+                
+                <div class="form-group">
+                  <label class="form-label">Address Line 1 <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="addressLine1" name="addressLine1" required>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Address Line 2</label>
+                  <input type="text" class="form-input" id="addressLine2" name="addressLine2">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">City <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="city" name="city" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Postcode <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="postcode" name="postcode" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Country <span class="required">*</span></label>
+                  <select class="form-select" id="country" name="country" required>
+                    <option value="United Kingdom" selected>United Kingdom</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="India">India</option>
+                    <option value="United States">United States</option>
+                    <option value="Australia">Australia</option>
+                  </select>
+                </div>
+                
+                <div class="agreement-box">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="paymentAuthorised" name="paymentAuthorised" required>
+                    <label class="form-check-label" for="paymentAuthorised">
+                      I authorise Equal Experts Association to charge my payment method £25/month until I cancel.
+                    </label>
+                  </div>
+                  <div class="form-error" id="paymentAuthError"></div>
+                </div>
+              </div>
+              <div class="card-footer" style="display: flex; gap: var(--space-4);">
+                <button type="button" class="btn btn-outline" onclick="prevStep(3)">Back</button>
+                <button type="button" class="btn btn-primary" style="flex: 1;" onclick="nextStep(3)">Review & Complete</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 4: Review & Confirm -->
+          <div class="form-step" data-step="4">
+            <div class="card">
+              <div class="card-header">
+                <h3>Review & Confirm</h3>
+              </div>
+              <div class="card-body">
+                <div class="alert alert-info">
+                  <span class="alert-icon">📋</span>
+                  <div class="alert-content">
+                    <div class="alert-title">Registration Summary</div>
+                  </div>
+                </div>
+                
+                <div class="info-grid mb-6" id="reviewSummary">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+                
+                <div style="display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-2);">
+                  <span style="color: var(--success);">✓</span>
+                  <span>Membership Rules & Articles accepted</span>
+                </div>
+                <div style="display: flex; gap: var(--space-2); align-items: center;">
+                  <span style="color: var(--success);">✓</span>
+                  <span>Payment authorisation confirmed</span>
+                </div>
+              </div>
+              <div class="card-footer" style="display: flex; gap: var(--space-4);">
+                <button type="button" class="btn btn-outline" onclick="prevStep(4)">Back</button>
+                <button type="submit" class="btn btn-primary btn-lg" style="flex: 1;" id="submitBtn">
+                  Create Account & Start Membership
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        
+        <!-- Success Message (hidden initially) -->
+        <div id="successMessage" style="display: none;">
+          <div class="card">
+            <div class="card-body text-center" style="padding: var(--space-12);">
+              <div style="font-size: 4rem; margin-bottom: var(--space-4);">🎉</div>
+              <h2 class="mb-4">Welcome to the EE Association!</h2>
+              <p class="text-gray mb-6">Your membership is now active. You have full access to all member benefits.</p>
+              <a href="dashboard.html" class="btn btn-primary btn-lg">Go to Dashboard</a>
+            </div>
+          </div>
+        </div>
+        
+        <p class="text-center text-sm text-gray mt-6">
+          Already have an account? <a href="login.html">Log in</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId);
+      field.type = field.type === 'password' ? 'text' : 'password';
+    }
+    
+    function updateStepIndicator() {
+      document.querySelectorAll('.step').forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.remove('active', 'completed');
+        if (stepNum === currentStep) {
+          step.classList.add('active');
+        } else if (stepNum < currentStep) {
+          step.classList.add('completed');
+        }
+      });
+      
+      document.querySelectorAll('.form-step').forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.toggle('active', stepNum === currentStep);
+      });
+    }
+    
+    function validateStep1() {
+      let isValid = true;
+      const errors = [];
+      
+      // Reset errors
+      document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+      document.querySelectorAll('.form-input, .form-select').forEach(el => el.classList.remove('error'));
+      
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const relationship = document.getElementById('relationshipToEE').value;
+      
+      if (!firstName) {
+        document.getElementById('firstNameError').textContent = 'First name is required';
+        document.getElementById('firstName').classList.add('error');
+        isValid = false;
+      }
+      
+      if (!lastName) {
+        document.getElementById('lastNameError').textContent = 'Last name is required';
+        document.getElementById('lastName').classList.add('error');
+        isValid = false;
+      }
+      
+      if (!email) {
+        document.getElementById('emailError').textContent = 'Email is required';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+      } else if (!Store.isEmailAllowed(email)) {
+        document.getElementById('emailError').textContent = 'This email address is not eligible for membership. Contact us if you believe this is an error.';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+      } else if (Store.getMemberByEmail(email)) {
+        document.getElementById('emailError').textContent = 'An account with this email address already exists.';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+      }
+      
+      if (!password) {
+        document.getElementById('passwordError').textContent = 'Password is required';
+        document.getElementById('password').classList.add('error');
+        isValid = false;
+      } else if (password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters';
+        document.getElementById('password').classList.add('error');
+        isValid = false;
+      } else if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+        document.getElementById('passwordError').textContent = 'Password must include at least one letter and one number';
+        document.getElementById('password').classList.add('error');
+        isValid = false;
+      }
+      
+      if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+        document.getElementById('confirmPassword').classList.add('error');
+        isValid = false;
+      }
+      
+      if (!relationship) {
+        document.getElementById('relationshipError').textContent = 'Please select your relationship to EE';
+        document.getElementById('relationshipToEE').classList.add('error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+    
+    function validateStep2() {
+      const rulesAccepted = document.getElementById('rulesAccepted').checked;
+      
+      if (!rulesAccepted) {
+        document.getElementById('rulesError').textContent = 'You must agree to the Membership Rules and Articles to continue.';
+        return false;
+      }
+      
+      document.getElementById('rulesError').textContent = '';
+      return true;
+    }
+    
+    function validateStep3() {
+      let isValid = true;
+      
+      const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+      const expMonth = document.getElementById('expMonth').value;
+      const expYear = document.getElementById('expYear').value;
+      const cvc = document.getElementById('cvc').value;
+      const cardholderName = document.getElementById('cardholderName').value.trim();
+      const addressLine1 = document.getElementById('addressLine1').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const postcode = document.getElementById('postcode').value.trim();
+      const paymentAuthorised = document.getElementById('paymentAuthorised').checked;
+      
+      if (!cardNumber || cardNumber.length < 13) {
+        document.getElementById('cardNumberError').textContent = 'Please enter a valid card number';
+        isValid = false;
+      } else {
+        document.getElementById('cardNumberError').textContent = '';
+      }
+      
+      if (!expMonth || !expYear) {
+        isValid = false;
+      }
+      
+      if (!cvc || cvc.length < 3) {
+        isValid = false;
+      }
+      
+      if (!cardholderName) {
+        isValid = false;
+      }
+      
+      if (!addressLine1) {
+        isValid = false;
+      }
+      
+      if (!city) {
+        isValid = false;
+      }
+      
+      if (!postcode) {
+        isValid = false;
+      }
+      
+      if (!paymentAuthorised) {
+        document.getElementById('paymentAuthError').textContent = 'Please authorise the payment to continue.';
+        isValid = false;
+      } else {
+        document.getElementById('paymentAuthError').textContent = '';
+      }
+      
+      return isValid;
+    }
+    
+    function updateReviewSummary() {
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const relationship = document.getElementById('relationshipToEE').value;
+      const cardNumber = document.getElementById('cardNumber').value;
+      const last4 = cardNumber.replace(/\s/g, '').slice(-4);
+      
+      document.getElementById('reviewSummary').innerHTML = `
+        <span class="info-label">Name</span>
+        <span class="info-value">${firstName} ${lastName}</span>
+        
+        <span class="info-label">Email</span>
+        <span class="info-value">${email}</span>
+        
+        <span class="info-label">Relationship</span>
+        <span class="info-value">${relationship}</span>
+        
+        <span class="info-label">Plan</span>
+        <span class="info-value">Professional Membership - £25/month</span>
+        
+        <span class="info-label">Commitment</span>
+        <span class="info-value">12-month commitment, paid monthly</span>
+        
+        <span class="info-label">Payment Method</span>
+        <span class="info-value">Card ending in ${last4}</span>
+      `;
+    }
+    
+    function nextStep(current) {
+      if (current === 1 && !validateStep1()) return;
+      if (current === 2 && !validateStep2()) return;
+      if (current === 3 && !validateStep3()) return;
+      
+      if (current < totalSteps) {
+        currentStep = current + 1;
+        updateStepIndicator();
+        
+        if (currentStep === 4) {
+          updateReviewSummary();
+        }
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+    
+    function prevStep(current) {
+      if (current > 1) {
+        currentStep = current - 1;
+        updateStepIndicator();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+    
+    // Handle form submission
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+      
+      // Collect form data
+      const formData = {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value,
+        relationshipToEE: document.getElementById('relationshipToEE').value,
+        cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+        expMonth: document.getElementById('expMonth').value,
+        expYear: document.getElementById('expYear').value,
+        cardholderName: document.getElementById('cardholderName').value.trim(),
+        addressLine1: document.getElementById('addressLine1').value.trim(),
+        addressLine2: document.getElementById('addressLine2').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        postcode: document.getElementById('postcode').value.trim(),
+        country: document.getElementById('country').value
+      };
+      
+      // Simulate processing delay
+      setTimeout(function() {
+        const result = Auth.register(formData);
+        
+        if (result.success) {
+          // Show success message
+          document.getElementById('registrationForm').style.display = 'none';
+          document.querySelector('.step-indicator').style.display = 'none';
+          document.getElementById('successMessage').style.display = 'block';
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Account & Start Membership';
+          alert(result.error);
+        }
+      }, 1500);
+    });
+    
+    // Format card number as user types
+    document.getElementById('cardNumber').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+      let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+      e.target.value = formatted;
+    });
+  </script>
+</body>
+</html>

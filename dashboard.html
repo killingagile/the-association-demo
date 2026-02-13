@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .dashboard-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: var(--space-6) 0;
+    }
+    
+    .dashboard-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+    
+    .dashboard-welcome h1 {
+      margin-bottom: var(--space-1);
+    }
+    
+    .dashboard-welcome .membership-statement {
+      color: var(--gray-700);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-1);
+    }
+    
+    .dashboard-welcome .subtitle {
+      color: var(--gray-500);
+    }
+    
+    .dashboard-status {
+      text-align: right;
+    }
+    
+    .quick-action-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-5);
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      text-decoration: none;
+      color: inherit;
+      transition: all var(--transition-fast);
+    }
+    
+    .quick-action-card:hover {
+      border-color: var(--ee-blue);
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+    }
+    
+    .quick-action-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--ee-blue-light);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .quick-action-content h4 {
+      margin-bottom: var(--space-1);
+      color: var(--gray-900);
+    }
+    
+    .quick-action-content p {
+      font-size: var(--font-size-sm);
+      color: var(--gray-500);
+      margin: 0;
+    }
+    
+    .help-strip {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+    
+    .help-strip-content {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    
+    .membership-card {
+      background: linear-gradient(135deg, var(--ee-blue) 0%, var(--ee-blue-dark) 100%);
+      color: white;
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+    
+    .membership-card h3 {
+      color: white;
+      margin-bottom: var(--space-4);
+    }
+    
+    .membership-card .info-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-2) var(--space-4);
+    }
+    
+    .membership-card .info-label {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .membership-card .info-value {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav" style="display: none;">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav">
+        <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+        <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Past Due Banner -->
+  <div id="pastDueBanner" class="notice-banner" style="display: none;">
+    <div class="notice-banner-content">
+      <span class="notice-banner-icon">⚠️</span>
+      <p><strong>Payment Issue:</strong> We're having trouble processing your payment. We'll retry automatically over the next few days. <a href="account.html#billing">Update payment method</a></p>
+    </div>
+  </div>
+
+  <!-- Dashboard Header -->
+  <header class="dashboard-header">
+    <div class="container">
+      <div class="dashboard-header-content">
+        <div class="dashboard-welcome">
+          <h1 id="welcomeHeading">Welcome back</h1>
+          <p class="membership-statement" id="membershipStatement">You are an active member of the EE Association.</p>
+          <p class="subtitle">Here are the quickest ways to get value from your membership.</p>
+        </div>
+        <div class="dashboard-status">
+          <span id="statusBadge" class="badge badge-active">Active</span>
+          <p class="text-sm text-gray mt-2"><a href="account.html#membership">Manage membership</a></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <div class="grid grid-2" style="gap: var(--space-8); align-items: start;">
+        
+        <!-- Left Column -->
+        <div>
+          <!-- Start Here Checklist -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h3>Start Here</h3>
+              <p class="text-sm text-gray mb-0">Complete these steps to get the most from your membership</p>
+            </div>
+            <div class="card-body">
+              <ul class="checklist" id="checklist">
+                <li class="checklist-item" data-item="slack">
+                  <div class="checklist-checkbox" onclick="toggleChecklistItem('slack')">
+                    <span style="display: none;">✓</span>
+                  </div>
+                  <div class="checklist-content">
+                    <div class="checklist-title">Join our Slack channel</div>
+                    <div class="checklist-description">Connect with other members and get support in #ask-ee-association</div>
+                  </div>
+                </li>
+                
+                <li class="checklist-item" data-item="benefits">
+                  <div class="checklist-checkbox" onclick="toggleChecklistItem('benefits')">
+                    <span style="display: none;">✓</span>
+                  </div>
+                  <div class="checklist-content">
+                    <div class="checklist-title">Explore your benefits</div>
+                    <div class="checklist-description">Browse all 23 benefits and see redemption details</div>
+                  </div>
+                </li>
+                
+                <li class="checklist-item" data-item="insurance">
+                  <div class="checklist-checkbox" onclick="toggleChecklistItem('insurance')">
+                    <span style="display: none;">✓</span>
+                  </div>
+                  <div class="checklist-content">
+                    <div class="checklist-title">Review your insurance coverage</div>
+                    <div class="checklist-description">Understand your legal, tax, and PI protection</div>
+                  </div>
+                </li>
+                
+                <li class="checklist-item" data-item="gp">
+                  <div class="checklist-checkbox" onclick="toggleChecklistItem('gp')">
+                    <span style="display: none;">✓</span>
+                  </div>
+                  <div class="checklist-content">
+                    <div class="checklist-title">Set up Virtual GP access</div>
+                    <div class="checklist-description">Download the app and register for 24/7 GP consultations</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <h3 class="mb-4">Quick Actions</h3>
+          <div class="grid" style="grid-template-columns: 1fr; gap: var(--space-4);">
+            <a href="benefits.html#health" class="quick-action-card">
+              <div class="quick-action-icon">👨‍⚕️</div>
+              <div class="quick-action-content">
+                <h4>Book a GP appointment</h4>
+                <p>24/7 video consultations with NHS-registered GPs</p>
+              </div>
+            </a>
+            
+            <a href="benefits.html#professional" class="quick-action-card">
+              <div class="quick-action-icon">📚</div>
+              <div class="quick-action-content">
+                <h4>Claim certification cashback</h4>
+                <p>Get up to £300 back on cloud certifications</p>
+              </div>
+            </a>
+            
+            <a href="benefits.html#savings" class="quick-action-card">
+              <div class="quick-action-icon">🛍️</div>
+              <div class="quick-action-content">
+                <h4>Access retail discounts</h4>
+                <p>Save at 1,500+ retailers including Amazon & John Lewis</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div>
+          <!-- Membership At a Glance -->
+          <div class="membership-card mb-6">
+            <h3>Membership at a Glance</h3>
+            <div class="info-grid">
+              <span class="info-label">Status</span>
+              <span class="info-value" id="glanceStatus">Active</span>
+              
+              <span class="info-label">Member since</span>
+              <span class="info-value" id="glanceMemberSince">-</span>
+              
+              <span class="info-label">Join date</span>
+              <span class="info-value" id="glanceJoinDate">-</span>
+              
+              <span class="info-label">Activation date</span>
+              <span class="info-value" id="glanceActivationDate">-</span>
+              
+              <span class="info-label">Commitment end</span>
+              <span class="info-value" id="glanceCommitmentEnd">-</span>
+              
+              <span class="info-label">Next payment</span>
+              <span class="info-value" id="glanceNextPayment">-</span>
+            </div>
+          </div>
+          
+          <!-- Help Strip -->
+          <div class="help-strip">
+            <div class="help-strip-content">
+              <span style="font-size: 1.5rem;">💬</span>
+              <div>
+                <strong>Need help?</strong>
+                <p class="text-sm text-gray mb-0">Ask in #ask-ee-association on Slack</p>
+              </div>
+            </div>
+            <a href="support.html" class="btn btn-outline btn-sm">View FAQs</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = Auth.getCurrentUser();
+      
+      if (!user) return;
+      
+      // Update welcome heading
+      document.getElementById('welcomeHeading').textContent = `Welcome back, ${user.firstName}`;
+      
+      // Update membership statement based on status
+      const statements = {
+        'active': 'You are an active member of the EE Association.',
+        'past_due': 'You are a member of the EE Association. Please update your payment method.',
+        'cancelled': `Your membership is active until ${formatDate(user.accessEndsDate)}.`
+      };
+      document.getElementById('membershipStatement').textContent = statements[user.status] || statements['active'];
+      
+      // Update status badge
+      const statusBadge = document.getElementById('statusBadge');
+      const badgeClasses = {
+        'active': 'badge-active',
+        'past_due': 'badge-past-due',
+        'cancelled': 'badge-cancelled'
+      };
+      const badgeText = {
+        'active': 'Active',
+        'past_due': 'Past Due',
+        'cancelled': `Active (Ends ${formatDate(user.accessEndsDate)})`
+      };
+      statusBadge.className = `badge ${badgeClasses[user.status] || 'badge-active'}`;
+      statusBadge.textContent = badgeText[user.status] || 'Active';
+      
+      // Show past due banner
+      if (user.status === 'past_due') {
+        document.getElementById('pastDueBanner').style.display = 'block';
+      }
+      
+      // Update membership at a glance
+      document.getElementById('glanceStatus').textContent = badgeText[user.status] || 'Active';
+      document.getElementById('glanceMemberSince').textContent = formatMonthYear(user.joinDate);
+      document.getElementById('glanceJoinDate').textContent = formatDate(user.joinDate);
+      document.getElementById('glanceActivationDate').textContent = formatDate(user.activationDate);
+      document.getElementById('glanceCommitmentEnd').textContent = formatDate(user.commitmentEndDate);
+      document.getElementById('glanceNextPayment').textContent = user.nextPaymentDate ? formatDate(user.nextPaymentDate) : 'N/A';
+      
+      // Load checklist state
+      if (user.checklist) {
+        Object.keys(user.checklist).forEach(item => {
+          if (user.checklist[item]) {
+            markChecklistComplete(item);
+          }
+        });
+      }
+    });
+    
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    
+    function formatMonthYear(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    }
+    
+    function toggleChecklistItem(item) {
+      const user = Auth.getCurrentUser();
+      if (!user) return;
+      
+      const listItem = document.querySelector(`.checklist-item[data-item="${item}"]`);
+      const isCompleted = listItem.classList.contains('completed');
+      
+      if (isCompleted) {
+        listItem.classList.remove('completed');
+        listItem.querySelector('.checklist-checkbox span').style.display = 'none';
+        Store.updateChecklist(user.id, item, false);
+      } else {
+        markChecklistComplete(item);
+        Store.updateChecklist(user.id, item, true);
+      }
+    }
+    
+    function markChecklistComplete(item) {
+      const listItem = document.querySelector(`.checklist-item[data-item="${item}"]`);
+      if (listItem) {
+        listItem.classList.add('completed');
+        listItem.querySelector('.checklist-checkbox span').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & FAQs - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <!-- Public Navigation -->
+      <ul class="nav-menu" id="publicNav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link active">Support</a></li>
+      </ul>
+      
+      <!-- Member Navigation -->
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link active">Support</a></li>
+        <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
+      </ul>
+      
+      <!-- Suspended Navigation -->
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link active">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <h1>Support & FAQs</h1>
+      <p class="subtitle">Find answers to common questions or get in touch with our support team</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <div class="grid grid-2" style="gap: var(--space-8); align-items: start;">
+        
+        <!-- FAQ Section -->
+        <div>
+          <h2 class="mb-6">Frequently Asked Questions</h2>
+          
+          <div id="faqContainer">
+            <!-- FAQs will be loaded here by JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Support & Changelog -->
+        <div>
+          <!-- Get Help Card -->
+          <div class="card mb-6">
+            <div class="card-header">
+              <h3>Need Help?</h3>
+            </div>
+            <div class="card-body">
+              <p class="mb-4">The quickest way to get help is through our Slack channel:</p>
+              
+              <div style="display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); background: var(--gray-50); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+                <span style="font-size: 2rem;">💬</span>
+                <div>
+                  <strong>#ask-ee-association</strong>
+                  <p class="text-sm text-gray mb-0">Mon-Fri, 9am-5pm GMT</p>
+                </div>
+              </div>
+              
+              <p class="text-sm text-gray">You can also email us at <a href="mailto:support@ee-association.com">support@ee-association.com</a></p>
+            </div>
+          </div>
+          
+          <!-- What's Changed Section -->
+          <div class="card">
+            <div class="card-header">
+              <h3>What's Changed</h3>
+            </div>
+            <div class="card-body">
+              <div class="timeline" id="changelogContainer">
+                <!-- Changelog will be loaded here by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+            <li><a href="mailto:support@ee-association.com">Email Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqContainer = document.getElementById('faqContainer');
+      const changelogContainer = document.getElementById('changelogContainer');
+      
+      // Render FAQs
+      let faqHTML = '';
+      window.EEAData.FAQ_DATA.forEach((category, catIndex) => {
+        faqHTML += `
+          <div class="mb-6">
+            <h4 class="mb-4">${category.category}</h4>
+            <div class="accordion">
+        `;
+        
+        category.questions.forEach((item, index) => {
+          const id = `faq-${catIndex}-${index}`;
+          faqHTML += `
+            <div class="accordion-item" data-id="${id}">
+              <button class="accordion-header">
+                <span>${item.question}</span>
+                <span class="accordion-icon">▼</span>
+              </button>
+              <div class="accordion-body">
+                <p>${item.answer}</p>
+              </div>
+            </div>
+          `;
+        });
+        
+        faqHTML += `
+            </div>
+          </div>
+        `;
+      });
+      faqContainer.innerHTML = faqHTML;
+      
+      // Accordion functionality
+      faqContainer.addEventListener('click', function(e) {
+        const header = e.target.closest('.accordion-header');
+        if (header) {
+          const item = header.parentElement;
+          item.classList.toggle('active');
+        }
+      });
+      
+      // Render Changelog
+      let changelogHTML = '';
+      window.EEAData.CHANGELOG_DATA.forEach(entry => {
+        changelogHTML += `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">${entry.date}</div>
+            <div class="timeline-title">${entry.title}</div>
+            <div class="timeline-content">
+              <ul style="margin: 0; padding-left: var(--space-5);">
+                ${entry.items.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `;
+      });
+      changelogContainer.innerHTML = changelogHTML;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Management - Equal Experts Association Admin</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .admin-header {
+      background: var(--gray-900);
+      color: white;
+      padding: var(--space-6) 0;
+    }
+    
+    .admin-header h1 {
+      color: white;
+    }
+    
+    .admin-header .subtitle {
+      color: var(--gray-400);
+    }
+    
+    .admin-toolbar {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-6);
+    }
+    
+    .admin-toolbar .search-wrapper {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    
+    .stat-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      text-align: center;
+    }
+    
+    .stat-card .stat-value {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-bold);
+      color: var(--gray-900);
+    }
+    
+    .stat-card .stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--gray-500);
+    }
+    
+    .member-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    
+    .member-table th {
+      background: var(--gray-50);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-semibold);
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .member-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--gray-200);
+      font-size: var(--font-size-sm);
+    }
+    
+    .member-table tr:hover {
+      background: var(--gray-50);
+    }
+    
+    .member-detail-modal {
+      max-width: 700px;
+    }
+    
+    .detail-section {
+      margin-bottom: var(--space-6);
+    }
+    
+    .detail-section h4 {
+      margin-bottom: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .suspension-history-table {
+      width: 100%;
+      font-size: var(--font-size-sm);
+    }
+    
+    .suspension-history-table th,
+    .suspension-history-table td {
+      padding: var(--space-2);
+      text-align: left;
+    }
+    
+    .suspension-history-table th {
+      background: var(--gray-50);
+    }
+    
+    /* Allowlist Management Styles */
+    .allowlist-section {
+      margin-bottom: var(--space-6);
+    }
+    
+    .allowlist-form {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    
+    .email-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-3);
+    }
+    
+    .email-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      transition: all var(--transition-fast);
+    }
+    
+    .email-item:hover {
+      background: var(--white);
+      border-color: var(--gray-300);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .email-text {
+      font-size: var(--font-size-sm);
+      color: var(--gray-700);
+      font-family: monospace;
+      word-break: break-all;
+    }
+    
+    .empty-state-allowlist {
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+      color: var(--gray-500);
+      background: var(--gray-50);
+      border: 1px dashed var(--gray-300);
+      border-radius: var(--radius-lg);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav" style="display: none;">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+        <li id="adminLink"><a href="admin.html" class="nav-link active">Admin</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="container">
+      <h1>Member Management</h1>
+      <p class="subtitle">View and manage all EE Association members</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <!-- Stats Bar -->
+      <div class="stats-bar" id="statsBar">
+        <div class="stat-card">
+          <div class="stat-value" id="totalMembers">0</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="activeMembers">0</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="pastDueMembers">0</div>
+          <div class="stat-label">Past Due</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="suspendedMembers">0</div>
+          <div class="stat-label">Suspended</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="cancelledMembers">0</div>
+          <div class="stat-label">Cancelled</div>
+        </div>
+      </div>
+
+      <!-- Email Allowlist Management -->
+      <div class="card allowlist-section">
+        <div class="card-header">
+          <h3>Email Allowlist Management</h3>
+          <p class="text-sm text-gray" style="margin: var(--space-2) 0 0 0;">Manage which email addresses are allowed to register for membership</p>
+        </div>
+        <div class="card-body">
+          <!-- Add Email Form -->
+          <div class="allowlist-form">
+            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+              <input 
+                type="email" 
+                class="form-input" 
+                id="emailInput" 
+                placeholder="Enter email address..."
+                onkeypress="if(event.key === 'Enter') addEmail()"
+              >
+              <div class="form-error" id="emailError" style="display: none;"></div>
+            </div>
+            <button class="btn btn-primary" onclick="addEmail()">Add Email</button>
+          </div>
+          
+          <!-- Email List -->
+          <div id="emailListContainer" style="margin-top: var(--space-6);">
+            <!-- Emails will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="admin-toolbar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search by name, email, or Member ID...">
+        </div>
+        
+        <select class="form-select" id="statusFilter" style="width: auto;">
+          <option value="">All Statuses</option>
+          <option value="active">Active</option>
+          <option value="past_due">Past Due</option>
+          <option value="suspended">Suspended</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        
+        <button class="btn btn-primary" onclick="Store.downloadCSV()">
+          📥 Export CSV
+        </button>
+      </div>
+
+      <!-- Members Table -->
+      <div class="card">
+        <div class="table-wrapper">
+          <table class="member-table" id="membersTable">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Join Date</th>
+                <th>Activation Date</th>
+                <th>Commitment End</th>
+                <th>Next Payment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <!-- Members will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Member Detail Modal -->
+  <div class="modal-overlay" id="memberDetailModal">
+    <div class="modal member-detail-modal">
+      <div class="modal-header">
+        <h3>Member Details</h3>
+        <button class="modal-close" onclick="hideMemberDetail()">&times;</button>
+      </div>
+      <div class="modal-body" id="memberDetailContent">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideMemberDetail()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    let allMembers = [];
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = Auth.getCurrentUser();
+      
+      // Check if user is admin
+      if (!user || !user.isAdmin) {
+        window.location.href = 'dashboard.html';
+        return;
+      }
+      
+      // Load members
+      loadMembers();
+      
+      // Load allowlist
+      loadAllowlist();
+      
+      // Setup search and filter
+      document.getElementById('searchInput').addEventListener('input', filterMembers);
+      document.getElementById('statusFilter').addEventListener('change', filterMembers);
+    });
+    
+    function loadMembers() {
+      allMembers = Store.getMembers();
+      updateStats();
+      renderMembers(allMembers);
+    }
+    
+    function updateStats() {
+      const stats = {
+        total: allMembers.length,
+        active: allMembers.filter(m => m.status === 'active').length,
+        past_due: allMembers.filter(m => m.status === 'past_due').length,
+        suspended: allMembers.filter(m => m.status === 'suspended').length,
+        cancelled: allMembers.filter(m => m.status === 'cancelled').length
+      };
+      
+      document.getElementById('totalMembers').textContent = stats.total;
+      document.getElementById('activeMembers').textContent = stats.active;
+      document.getElementById('pastDueMembers').textContent = stats.past_due;
+      document.getElementById('suspendedMembers').textContent = stats.suspended;
+      document.getElementById('cancelledMembers').textContent = stats.cancelled;
+    }
+    
+    function filterMembers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      
+      let filtered = allMembers;
+      
+      if (searchTerm) {
+        filtered = filtered.filter(m => 
+          m.id.toLowerCase().includes(searchTerm) ||
+          m.firstName.toLowerCase().includes(searchTerm) ||
+          m.lastName.toLowerCase().includes(searchTerm) ||
+          m.email.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      if (statusFilter) {
+        filtered = filtered.filter(m => m.status === statusFilter);
+      }
+      
+      renderMembers(filtered);
+    }
+    
+    function renderMembers(members) {
+      const tbody = document.getElementById('membersTableBody');
+      
+      if (members.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="text-center text-gray" style="padding: var(--space-8);">
+              No members found matching your criteria
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tbody.innerHTML = members.map(member => {
+        const badgeClass = {
+          'active': 'badge-active',
+          'past_due': 'badge-past-due',
+          'suspended': 'badge-suspended',
+          'cancelled': 'badge-cancelled'
+        }[member.status] || 'badge-inactive';
+        
+        const statusText = {
+          'active': 'Active',
+          'past_due': 'Past Due',
+          'suspended': 'Suspended',
+          'cancelled': 'Cancelled'
+        }[member.status] || 'Unknown';
+        
+        return `
+          <tr>
+            <td><code>${member.id}</code></td>
+            <td>${member.firstName} ${member.lastName}</td>
+            <td>${member.email}</td>
+            <td><span class="badge ${badgeClass}">${statusText}</span></td>
+            <td>${formatDate(member.joinDate)}</td>
+            <td>${formatDate(member.activationDate)}</td>
+            <td>${formatDate(member.commitmentEndDate)}</td>
+            <td>${member.nextPaymentDate ? formatDate(member.nextPaymentDate) : '-'}</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="showMemberDetail('${member.id}')">View</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+    
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    
+    function formatDateTime(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    function showMemberDetail(memberId) {
+      const member = Store.getMemberById(memberId);
+      if (!member) return;
+      
+      const badgeClass = {
+        'active': 'badge-active',
+        'past_due': 'badge-past-due',
+        'suspended': 'badge-suspended',
+        'cancelled': 'badge-cancelled'
+      }[member.status] || 'badge-inactive';
+      
+      const statusText = {
+        'active': 'Active',
+        'past_due': 'Past Due',
+        'suspended': 'Suspended',
+        'cancelled': 'Cancelled'
+      }[member.status] || 'Unknown';
+      
+      let suspensionHistoryHTML = '<p class="text-gray text-sm">No suspension history</p>';
+      if (member.suspensionHistory && member.suspensionHistory.length > 0) {
+        suspensionHistoryHTML = `
+          <table class="suspension-history-table">
+            <thead>
+              <tr>
+                <th>Date Suspended</th>
+                <th>Date Reactivated</th>
+                <th>Reason</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${member.suspensionHistory.map(s => `
+                <tr>
+                  <td>${formatDate(s.dateSuspended)}</td>
+                  <td>${s.dateReactivated ? formatDate(s.dateReactivated) : '-'}</td>
+                  <td>${s.reason}</td>
+                  <td>${s.duration || '-'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+      
+      document.getElementById('memberDetailContent').innerHTML = `
+        <div class="detail-section">
+          <h4>Basic Information</h4>
+          <div class="info-grid">
+            <span class="info-label">Member ID</span>
+            <span class="info-value"><code>${member.id}</code></span>
+            
+            <span class="info-label">Name</span>
+            <span class="info-value">${member.firstName} ${member.lastName}</span>
+            
+            <span class="info-label">Email</span>
+            <span class="info-value">${member.email}</span>
+            
+            <span class="info-label">Relationship</span>
+            <span class="info-value">${member.relationshipToEE}</span>
+            
+            <span class="info-label">Status</span>
+            <span class="info-value"><span class="badge ${badgeClass}">${statusText}</span></span>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h4>Key Dates</h4>
+          <div class="info-grid">
+            <span class="info-label">Join Date</span>
+            <span class="info-value">${formatDate(member.joinDate)}</span>
+            
+            <span class="info-label">Activation Date</span>
+            <span class="info-value">${formatDate(member.activationDate)}</span>
+            
+            <span class="info-label">Commitment End</span>
+            <span class="info-value">${formatDate(member.commitmentEndDate)}</span>
+            
+            <span class="info-label">Next Payment</span>
+            <span class="info-value">${member.nextPaymentDate ? formatDate(member.nextPaymentDate) : 'N/A'}</span>
+            
+            ${member.cancellationDate ? `
+              <span class="info-label">Cancellation Date</span>
+              <span class="info-value">${formatDate(member.cancellationDate)}</span>
+            ` : ''}
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h4>Agreement Acceptance</h4>
+          <div class="info-grid">
+            <span class="info-label">Membership Rules accepted</span>
+            <span class="info-value">${member.rulesAccepted ? '✅ YES' : '❌ NO'}</span>
+            
+            <span class="info-label">Articles of Association accepted</span>
+            <span class="info-value">${member.rulesAccepted ? '✅ YES' : '❌ NO'}</span>
+            
+            <span class="info-label">Acceptance timestamp</span>
+            <span class="info-value">${formatDateTime(member.rulesAcceptanceTimestamp)}</span>
+            
+            <span class="info-label">IP address</span>
+            <span class="info-value">${member.rulesAcceptanceIP || '-'}</span>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h4>Suspension History</h4>
+          ${suspensionHistoryHTML}
+        </div>
+        
+        <div class="detail-section">
+          <h4>Payment Method</h4>
+          ${member.paymentMethod ? `
+            <div class="info-grid">
+              <span class="info-label">Card</span>
+              <span class="info-value">${member.paymentMethod.brand} ending in ${member.paymentMethod.last4}</span>
+              
+              <span class="info-label">Expires</span>
+              <span class="info-value">${member.paymentMethod.expMonth}/${member.paymentMethod.expYear}</span>
+            </div>
+          ` : '<p class="text-gray text-sm">No payment method on file</p>'}
+        </div>
+      `;
+      
+      document.getElementById('memberDetailModal').classList.add('active');
+    }
+    
+    function hideMemberDetail() {
+      document.getElementById('memberDetailModal').classList.remove('active');
+    }
+    
+    // ========== Allowlist Management Functions ==========
+    
+    function loadAllowlist() {
+      const emails = Store.getAllowlist();
+      renderAllowlist(emails);
+    }
+    
+    function renderAllowlist(emails) {
+      const container = document.getElementById('emailListContainer');
+      
+      if (emails.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-allowlist">
+            <p>No emails in the allowlist yet. Add emails above to allow registrations.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = `
+        <div class="email-list">
+          ${emails.map(email => `
+            <div class="email-item">
+              <span class="email-text">${email}</span>
+              <button class="btn btn-danger btn-sm" onclick="removeEmail('${email}')">
+                Remove
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    function addEmail() {
+      const input = document.getElementById('emailInput');
+      const errorDiv = document.getElementById('emailError');
+      const email = input.value.trim();
+      
+      // Clear previous error
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) {
+        showEmailError('Please enter an email address');
+        return;
+      }
+      
+      if (!emailRegex.test(email)) {
+        showEmailError('Please enter a valid email address');
+        return;
+      }
+      
+      // Get current allowlist
+      const allowlist = Store.getAllowlist();
+      
+      // Check for duplicates (case-insensitive)
+      if (allowlist.some(e => e.toLowerCase() === email.toLowerCase())) {
+        showEmailError('This email is already in the allowlist');
+        return;
+      }
+      
+      // Add email to allowlist
+      allowlist.push(email);
+      Store.updateAllowlist(allowlist);
+      
+      // Clear input and refresh list
+      input.value = '';
+      loadAllowlist();
+    }
+    
+    function removeEmail(email) {
+      if (!confirm(`Are you sure you want to remove "${email}" from the allowlist?`)) {
+        return;
+      }
+      
+      // Get current allowlist and remove the email
+      let allowlist = Store.getAllowlist();
+      allowlist = allowlist.filter(e => e !== email);
+      Store.updateAllowlist(allowlist);
+      
+      // Refresh list
+      loadAllowlist();
+    }
+    
+    function showEmailError(message) {
+      const errorDiv = document.getElementById('emailError');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

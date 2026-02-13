@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .login-container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: var(--space-12) var(--space-4);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+    
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      background: var(--ee-blue);
+      color: white;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-bold);
+      margin: 0 auto var(--space-4);
+    }
+    
+    .demo-accounts {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-top: var(--space-6);
+    }
+    
+    .demo-accounts h4 {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    
+    .demo-account {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--gray-200);
+      font-size: var(--font-size-sm);
+    }
+    
+    .demo-account:last-child {
+      border-bottom: none;
+    }
+    
+    .demo-account-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .demo-account-email {
+      color: var(--gray-600);
+    }
+    
+    .demo-account-status {
+      font-size: var(--font-size-xs);
+    }
+    
+    .demo-account button {
+      padding: var(--space-1) var(--space-3);
+      font-size: var(--font-size-xs);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="page">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="login-logo">EE</div>
+        <h1>Welcome Back</h1>
+        <p class="text-gray">Sign in to access your membership</p>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <!-- Error Message -->
+          <div id="loginError" class="alert alert-error" style="display: none;">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+              <p class="alert-message" id="loginErrorMessage"></p>
+            </div>
+          </div>
+          
+          <form id="loginForm">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" id="email" name="email" required autofocus>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <div class="password-wrapper">
+                <input type="password" class="form-input" id="password" name="password" required>
+                <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginBtn">
+              Sign In
+            </button>
+          </form>
+          
+          <div class="text-center mt-4">
+            <a href="#" class="text-sm">Forgot your password?</a>
+          </div>
+        </div>
+      </div>
+      
+      <p class="text-center text-sm text-gray mt-6">
+        Don't have an account? <a href="register.html">Register</a>
+      </p>
+      
+      <!-- Demo Accounts -->
+      <div class="demo-accounts">
+        <h4>🧪 Demo Accounts</h4>
+        <p class="text-sm text-gray mb-3">Click to auto-fill credentials (password: Password123)</p>
+        
+        <div class="demo-account">
+          <div class="demo-account-info">
+            <span class="demo-account-email">john.smith@equalexperts.com</span>
+            <span class="demo-account-status"><span class="badge badge-active">Active</span></span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fillDemo('john.smith@equalexperts.com')">Use</button>
+        </div>
+        
+        <div class="demo-account">
+          <div class="demo-account-info">
+            <span class="demo-account-email">jane.doe@equalexperts.com</span>
+            <span class="demo-account-status"><span class="badge badge-past-due">Past Due</span></span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fillDemo('jane.doe@equalexperts.com')">Use</button>
+        </div>
+        
+        <div class="demo-account">
+          <div class="demo-account-info">
+            <span class="demo-account-email">alex.johnson@equalexperts.com</span>
+            <span class="demo-account-status"><span class="badge badge-suspended">Suspended</span></span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fillDemo('alex.johnson@equalexperts.com')">Use</button>
+        </div>
+        
+        <div class="demo-account">
+          <div class="demo-account-info">
+            <span class="demo-account-email">sarah.wilson@equalexperts.com</span>
+            <span class="demo-account-status"><span class="badge badge-cancelled">Cancelled</span></span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fillDemo('sarah.wilson@equalexperts.com')">Use</button>
+        </div>
+        
+        <div class="demo-account">
+          <div class="demo-account-info">
+            <span class="demo-account-email">admin@equalexperts.com</span>
+            <span class="demo-account-status"><span class="badge badge-info">Admin</span></span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fillDemo('admin@equalexperts.com', 'Admin123')">Use</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    function togglePassword() {
+      const field = document.getElementById('password');
+      field.type = field.type === 'password' ? 'text' : 'password';
+    }
+    
+    function fillDemo(email, password = 'Password123') {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = password;
+    }
+    
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const loginBtn = document.getElementById('loginBtn');
+      const errorDiv = document.getElementById('loginError');
+      const errorMessage = document.getElementById('loginErrorMessage');
+      
+      // Hide any previous error
+      errorDiv.style.display = 'none';
+      
+      // Show loading state
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing in...';
+      
+      // Simulate network delay
+      setTimeout(function() {
+        const result = Auth.login(email, password);
+        
+        if (result.success) {
+          // Redirect based on status
+          const user = result.user;
+          if (user.status === 'suspended') {
+            window.location.href = 'suspended.html';
+          } else {
+            window.location.href = 'dashboard.html';
+          }
+        } else {
+          // Show error
+          errorMessage.textContent = result.error;
+          errorDiv.style.display = 'flex';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Sign In';
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>

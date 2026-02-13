@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .account-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .commitment-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-3);
+    }
+    
+    .commitment-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .commitment-content strong {
+      display: block;
+      margin-bottom: var(--space-1);
+    }
+    
+    .commitment-content p {
+      font-size: var(--font-size-sm);
+      color: var(--gray-600);
+      margin: 0;
+    }
+    
+    .payment-method-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+    }
+    
+    .card-brand {
+      width: 48px;
+      height: 32px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      font-size: var(--font-size-xs);
+      color: var(--gray-600);
+    }
+    
+    .invoice-list {
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    
+    .invoice-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-4);
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .invoice-item:last-child {
+      border-bottom: none;
+    }
+    
+    .invoice-item:hover {
+      background: var(--gray-50);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav" style="display: none;">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link active">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+        <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link active">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <div class="account-container">
+        <h1>Account Settings</h1>
+        <p class="subtitle">Manage your profile, membership, and billing</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <div class="account-container">
+        <!-- Tabs -->
+        <div class="tabs" id="accountTabs">
+          <button class="tab active" data-tab="profile">Profile</button>
+          <button class="tab" data-tab="membership">Membership</button>
+          <button class="tab" data-tab="billing">Billing</button>
+        </div>
+        
+        <!-- Profile Tab -->
+        <div class="tab-content active" id="profile">
+          <div class="card">
+            <div class="card-header">
+              <h3>Personal Information</h3>
+            </div>
+            <div class="card-body">
+              <form id="profileForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-input" id="firstName" name="firstName">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-input" id="lastName" name="lastName">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-input" id="email" name="email" disabled>
+                  <div class="form-hint">Contact support to change your email address</div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Relationship to Equal Experts</label>
+                  <select class="form-select" id="relationshipToEE" name="relationshipToEE">
+                    <option value="Current Employee">Current Employee</option>
+                    <option value="Former Employee">Former Employee</option>
+                    <option value="Contractor">Contractor</option>
+                    <option value="Partner">Partner</option>
+                  </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </form>
+            </div>
+          </div>
+          
+          <div class="card mt-6">
+            <div class="card-header">
+              <h3>Change Password</h3>
+            </div>
+            <div class="card-body">
+              <form id="passwordForm">
+                <div class="form-group">
+                  <label class="form-label">Current Password</label>
+                  <input type="password" class="form-input" id="currentPassword" name="currentPassword">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-input" id="newPassword" name="newPassword">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-input" id="confirmNewPassword" name="confirmNewPassword">
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Membership Tab -->
+        <div class="tab-content" id="membership">
+          <div class="card">
+            <div class="card-header">
+              <h3>Membership Status</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-grid mb-6">
+                <span class="info-label">Status</span>
+                <span class="info-value"><span id="membershipStatus" class="badge badge-active">Active</span></span>
+                
+                <span class="info-label">Member since</span>
+                <span class="info-value" id="memberSince">-</span>
+                
+                <span class="info-label">Join date</span>
+                <span class="info-value" id="joinDate">-</span>
+                
+                <span class="info-label">Activation date</span>
+                <span class="info-value" id="activationDate">-</span>
+                
+                <span class="info-label">Commitment end date</span>
+                <span class="info-value" id="commitmentEndDate">-</span>
+                
+                <span class="info-label">Next billing date</span>
+                <span class="info-value" id="nextBillingDate">-</span>
+                
+                <span class="info-label">Monthly price</span>
+                <span class="info-value">£25.00</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mt-6">
+            <div class="card-header">
+              <h3>Your Membership Commitments</h3>
+              <p class="text-sm text-gray mb-0">Important information about your membership structure</p>
+            </div>
+            <div class="card-body">
+              <div class="commitment-item">
+                <span class="commitment-icon">📋</span>
+                <div class="commitment-content">
+                  <strong>You are a member of a Company Limited by Guarantee</strong>
+                  <p>The Equal Experts Association is a non-profit company structure with no shareholders.</p>
+                </div>
+              </div>
+              
+              <div class="commitment-item">
+                <span class="commitment-icon">🛡️</span>
+                <div class="commitment-content">
+                  <strong>Your liability is limited to £1</strong>
+                  <p>If the association is wound up while you are a member, or within one year after you cease to be a member, your maximum liability is £1.</p>
+                </div>
+              </div>
+              
+              <div class="commitment-item">
+                <span class="commitment-icon">📄</span>
+                <div class="commitment-content">
+                  <strong>Membership is subject to the Membership Rules</strong>
+                  <p>You agreed to these rules when you registered.</p>
+                </div>
+              </div>
+              
+              <div class="commitment-item">
+                <span class="commitment-icon">🔗</span>
+                <div class="commitment-content">
+                  <a href="#" class="btn btn-outline btn-sm" onclick="alert('PDF would open in production')">View Membership Rules (PDF)</a>
+                  <a href="#" class="btn btn-outline btn-sm" onclick="alert('PDF would open in production')">View Articles of Association (PDF)</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mt-6" id="cancelSection">
+            <div class="card-header">
+              <h3>Cancel Membership</h3>
+            </div>
+            <div class="card-body">
+              <p class="mb-4">Cancellation stops future payments. You'll keep benefits until the end of your current billing period.</p>
+              <p class="text-sm text-gray mb-4">This membership is described as a 12-month commitment, paid monthly, but early cancellation is allowed.</p>
+              
+              <button class="btn btn-danger" id="cancelBtn" onclick="showCancelModal()">Cancel Membership</button>
+            </div>
+          </div>
+          
+          <!-- Cancelled Status Section (hidden by default) -->
+          <div class="card mt-6" id="cancelledSection" style="display: none;">
+            <div class="card-body">
+              <div class="alert alert-info">
+                <span class="alert-icon">ℹ️</span>
+                <div class="alert-content">
+                  <div class="alert-title">Membership Cancelled</div>
+                  <p class="alert-message">Your membership has been cancelled. You'll keep access to benefits until <strong id="accessEndDate">-</strong>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Billing Tab -->
+        <div class="tab-content" id="billing">
+          <div class="card">
+            <div class="card-header">
+              <h3>Payment Method</h3>
+            </div>
+            <div class="card-body">
+              <div class="payment-method-card mb-4">
+                <div class="card-brand" id="cardBrand">VISA</div>
+                <div>
+                  <strong id="cardInfo">•••• •••• •••• 4242</strong>
+                  <p class="text-sm text-gray mb-0" id="cardExpiry">Expires 12/2027</p>
+                </div>
+              </div>
+              
+              <button class="btn btn-outline" onclick="showPaymentModal()">Update Payment Method</button>
+            </div>
+          </div>
+          
+          <div class="card mt-6">
+            <div class="card-header">
+              <h3>Billing Address</h3>
+            </div>
+            <div class="card-body">
+              <p id="billingAddress">-</p>
+              <button class="btn btn-outline btn-sm" onclick="alert('Address editing would be available in production')">Edit Address</button>
+            </div>
+          </div>
+          
+          <div class="card mt-6">
+            <div class="card-header">
+              <h3>Invoice History</h3>
+            </div>
+            <div class="card-body">
+              <div class="invoice-list" id="invoiceList">
+                <!-- Invoices will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Cancel Membership Modal -->
+  <div class="modal-overlay" id="cancelModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Cancel Membership</h3>
+        <button class="modal-close" onclick="hideCancelModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to cancel your membership?</p>
+        <ul style="margin: var(--space-4) 0; padding-left: var(--space-5);">
+          <li>Future payments will be stopped</li>
+          <li>You'll keep access until the end of your current billing period</li>
+          <li>You can rejoin at any time if your email is still on the approved list</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideCancelModal()">Keep Membership</button>
+        <button class="btn btn-danger" onclick="confirmCancel()">Cancel Membership</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Update Payment Method</h3>
+        <button class="modal-close" onclick="hidePaymentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="paymentForm">
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-input" id="newCardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Expiry Month</label>
+              <select class="form-select" id="newExpMonth">
+                <option value="">MM</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Expiry Year</label>
+              <select class="form-select" id="newExpYear">
+                <option value="">YYYY</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">CVC</label>
+            <input type="text" class="form-input" id="newCvc" placeholder="123" maxlength="4">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hidePaymentModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="updatePayment()">Update Card</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = Auth.getCurrentUser();
+      if (!user) return;
+      
+      // Populate profile form
+      document.getElementById('firstName').value = user.firstName || '';
+      document.getElementById('lastName').value = user.lastName || '';
+      document.getElementById('email').value = user.email || '';
+      document.getElementById('relationshipToEE').value = user.relationshipToEE || '';
+      
+      // Populate membership tab
+      updateMembershipDisplay(user);
+      
+      // Populate billing tab
+      updateBillingDisplay(user);
+      
+      // Handle tab navigation from URL hash
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['profile', 'membership', 'billing'].includes(hash)) {
+        switchTab(hash);
+      }
+    });
+    
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    
+    function formatMonthYear(dateStr) {
+      if (!dateStr) return '-';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    }
+    
+    function updateMembershipDisplay(user) {
+      const statusBadge = document.getElementById('membershipStatus');
+      const badgeClasses = {
+        'active': 'badge-active',
+        'past_due': 'badge-past-due',
+        'suspended': 'badge-suspended',
+        'cancelled': 'badge-cancelled'
+      };
+      const badgeText = {
+        'active': 'Active',
+        'past_due': 'Past Due',
+        'suspended': 'Suspended',
+        'cancelled': 'Cancelled'
+      };
+      
+      statusBadge.className = `badge ${badgeClasses[user.status] || 'badge-active'}`;
+      statusBadge.textContent = badgeText[user.status] || 'Active';
+      
+      document.getElementById('memberSince').textContent = formatMonthYear(user.joinDate);
+      document.getElementById('joinDate').textContent = formatDate(user.joinDate);
+      document.getElementById('activationDate').textContent = formatDate(user.activationDate);
+      document.getElementById('commitmentEndDate').textContent = formatDate(user.commitmentEndDate);
+      document.getElementById('nextBillingDate').textContent = user.nextPaymentDate ? formatDate(user.nextPaymentDate) : 'N/A';
+      
+      // Handle cancelled state
+      if (user.status === 'cancelled') {
+        document.getElementById('cancelSection').style.display = 'none';
+        document.getElementById('cancelledSection').style.display = 'block';
+        document.getElementById('accessEndDate').textContent = formatDate(user.accessEndsDate);
+      }
+    }
+    
+    function updateBillingDisplay(user) {
+      if (user.paymentMethod) {
+        document.getElementById('cardBrand').textContent = user.paymentMethod.brand.toUpperCase();
+        document.getElementById('cardInfo').textContent = `•••• •••• •••• ${user.paymentMethod.last4}`;
+        document.getElementById('cardExpiry').textContent = `Expires ${user.paymentMethod.expMonth}/${user.paymentMethod.expYear}`;
+      }
+      
+      if (user.billingAddress) {
+        const addr = user.billingAddress;
+        const parts = [addr.line1, addr.line2, addr.city, addr.postcode, addr.country].filter(p => p);
+        document.getElementById('billingAddress').textContent = parts.join(', ');
+      }
+      
+      // Generate mock invoice history
+      const invoiceList = document.getElementById('invoiceList');
+      const invoices = generateMockInvoices(user);
+      
+      invoiceList.innerHTML = invoices.map(inv => `
+        <div class="invoice-item">
+          <div>
+            <strong>${inv.date}</strong>
+            <p class="text-sm text-gray mb-0">${inv.description}</p>
+          </div>
+          <div class="text-right">
+            <strong>£${inv.amount.toFixed(2)}</strong>
+            <p class="text-sm mb-0"><span class="badge badge-success">Paid</span></p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function generateMockInvoices(user) {
+      const invoices = [];
+      const activationDate = new Date(user.activationDate);
+      const now = new Date();
+      
+      // Generate invoices from activation to now
+      let currentDate = new Date(activationDate);
+      while (currentDate <= now) {
+        invoices.push({
+          date: currentDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          description: 'Professional Membership - Monthly',
+          amount: 25.00
+        });
+        currentDate.setMonth(currentDate.getMonth() + 1);
+      }
+      
+      return invoices.reverse().slice(0, 12); // Show last 12 invoices
+    }
+    
+    // Tab switching
+    document.getElementById('accountTabs').addEventListener('click', function(e) {
+      if (e.target.classList.contains('tab')) {
+        const tabId = e.target.dataset.tab;
+        switchTab(tabId);
+      }
+    });
+    
+    function switchTab(tabId) {
+      // Update tab buttons
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabId);
+      });
+      
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === tabId);
+      });
+      
+      // Update URL hash
+      window.location.hash = tabId;
+    }
+    
+    // Profile form
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const updates = {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        relationshipToEE: document.getElementById('relationshipToEE').value
+      };
+      
+      const result = Auth.updateProfile(updates);
+      if (result.success) {
+        alert('Profile updated successfully!');
+      } else {
+        alert('Error: ' + result.error);
+      }
+    });
+    
+    // Password form
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+      
+      if (newPassword !== confirmNewPassword) {
+        alert('New passwords do not match');
+        return;
+      }
+      
+      if (newPassword.length < 8) {
+        alert('Password must be at least 8 characters');
+        return;
+      }
+      
+      const result = Auth.updatePassword(currentPassword, newPassword);
+      if (result.success) {
+        alert('Password updated successfully!');
+        document.getElementById('passwordForm').reset();
+      } else {
+        alert('Error: ' + result.error);
+      }
+    });
+    
+    // Cancel modal
+    function showCancelModal() {
+      document.getElementById('cancelModal').classList.add('active');
+    }
+    
+    function hideCancelModal() {
+      document.getElementById('cancelModal').classList.remove('active');
+    }
+    
+    function confirmCancel() {
+      const result = Auth.cancelMembership();
+      if (result.success) {
+        hideCancelModal();
+        updateMembershipDisplay(result.user);
+        alert('Your membership has been cancelled. You\'ll keep access until the end of your current billing period.');
+      } else {
+        alert('Error: ' + result.error);
+      }
+    }
+    
+    // Payment modal
+    function showPaymentModal() {
+      document.getElementById('paymentModal').classList.add('active');
+    }
+    
+    function hidePaymentModal() {
+      document.getElementById('paymentModal').classList.remove('active');
+    }
+    
+    function updatePayment() {
+      const cardNumber = document.getElementById('newCardNumber').value.replace(/\s/g, '');
+      const expMonth = document.getElementById('newExpMonth').value;
+      const expYear = document.getElementById('newExpYear').value;
+      
+      if (!cardNumber || cardNumber.length < 13 || !expMonth || !expYear) {
+        alert('Please fill in all card details');
+        return;
+      }
+      
+      const result = Auth.updatePaymentMethod({
+        cardNumber,
+        expMonth,
+        expYear
+      });
+      
+      if (result.success) {
+        hidePaymentModal();
+        updateBillingDisplay(result.user);
+        updateMembershipDisplay(result.user);
+        
+        if (result.user.status === 'active') {
+          alert('Payment method updated successfully!' + 
+            (result.user.suspensionHistory && result.user.suspensionHistory.length > 0 ? 
+              ' Your access has been restored.' : ''));
+        } else {
+          alert('Payment method updated successfully!');
+        }
+      } else {
+        alert('Error: ' + result.error);
+      }
+    }
+    
+    // Format card number as user types
+    document.getElementById('newCardNumber').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+      let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+      e.target.value = formatted;
+    });
+  </script>
+</body>
+</html>

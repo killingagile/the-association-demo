@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Suspended - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .suspended-header {
+      background: var(--error);
+      color: white;
+      padding: var(--space-6) 0;
+      text-align: center;
+    }
+    
+    .suspended-header h1 {
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+    }
+    
+    .suspended-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-4);
+    }
+    
+    .suspended-content {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: var(--space-8);
+      text-align: center;
+    }
+    
+    .suspended-content h2 {
+      margin-bottom: var(--space-4);
+    }
+    
+    .suspended-message {
+      color: var(--gray-600);
+      margin-bottom: var(--space-6);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .restore-steps {
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      text-align: left;
+      margin-bottom: var(--space-6);
+    }
+    
+    .restore-steps h4 {
+      margin-bottom: var(--space-4);
+    }
+    
+    .restore-steps ol {
+      margin: 0;
+      padding-left: var(--space-5);
+    }
+    
+    .restore-steps li {
+      margin-bottom: var(--space-2);
+      color: var(--gray-700);
+    }
+    
+    .outstanding-balance {
+      background: var(--error-light);
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+    
+    .outstanding-balance .info-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-2) var(--space-4);
+      text-align: left;
+    }
+    
+    .info-notice {
+      background: var(--gray-100);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-top: var(--space-6);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      text-align: left;
+    }
+    
+    .info-notice-icon {
+      color: var(--gray-500);
+      flex-shrink: 0;
+    }
+    
+    .info-notice p {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      color: var(--gray-600);
+    }
+    
+    .support-link {
+      margin-top: var(--space-6);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--gray-200);
+    }
+    
+    .support-link p {
+      margin: 0;
+      color: var(--gray-500);
+      font-size: var(--font-size-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <ul class="nav-menu" id="publicNav" style="display: none;">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <ul class="nav-menu" id="suspendedNav">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Suspended Header Banner -->
+  <header class="suspended-header">
+    <div class="container">
+      <h1>❌ Payment Issue - Access Suspended</h1>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-content" style="background: var(--gray-100);">
+    <div class="suspended-container">
+      <div class="suspended-content">
+        <h2>Your membership access has been suspended</h2>
+        
+        <p class="suspended-message">
+          We've been unable to process your payment, and automatic retries have been exhausted. 
+          Your access to member benefits has been suspended.
+        </p>
+        
+        <div class="restore-steps">
+          <h4>To restore your access immediately:</h4>
+          <ol>
+            <li>Update your payment method below</li>
+            <li>We'll attempt the outstanding payment</li>
+            <li>Your access will be restored within a few minutes (if successful)</li>
+          </ol>
+        </div>
+        
+        <div class="outstanding-balance">
+          <div class="info-grid">
+            <span class="info-label">Outstanding payment:</span>
+            <span class="info-value"><strong id="outstandingAmount">£25.00</strong></span>
+            
+            <span class="info-label">Failed payment date:</span>
+            <span class="info-value" id="failedPaymentDate">-</span>
+          </div>
+        </div>
+        
+        <a href="account.html#billing" class="btn btn-primary btn-lg">Update Payment Method</a>
+        
+        <div class="info-notice">
+          <span class="info-notice-icon">ℹ️</span>
+          <div>
+            <p><strong>Important Information</strong></p>
+            <p>This membership is described as a 12-month commitment, paid monthly. If you wish to cancel, you can do so in Account settings.</p>
+          </div>
+        </div>
+        
+        <div class="support-link">
+          <p>Need help? Contact us in Slack: <strong>#ask-ee-association</strong> (Mon-Fri, 9am-5pm GMT)</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = Auth.getCurrentUser();
+      
+      if (!user) return;
+      
+      // If user is not suspended, redirect to dashboard
+      if (user.status !== 'suspended') {
+        window.location.href = 'dashboard.html';
+        return;
+      }
+      
+      // Display outstanding balance info
+      if (user.failedPaymentAmount) {
+        document.getElementById('outstandingAmount').textContent = `£${user.failedPaymentAmount.toFixed(2)}`;
+      }
+      
+      if (user.failedPaymentDate) {
+        const date = new Date(user.failedPaymentDate);
+        document.getElementById('failedPaymentDate').textContent = date.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

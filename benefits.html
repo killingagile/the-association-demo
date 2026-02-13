@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Benefits - Equal Experts Association</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">EE</div>
+        <span>EE Association</span>
+      </a>
+      
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <!-- Public Navigation -->
+      <ul class="nav-menu" id="publicNav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="benefits.html" class="nav-link active">Benefits</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <!-- Member Navigation -->
+      <ul class="nav-menu" id="memberNav" style="display: none;">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="benefits.html" class="nav-link active">Benefits</a></li>
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+        <li id="adminLink" style="display: none;"><a href="admin.html" class="nav-link">Admin</a></li>
+      </ul>
+      
+      <!-- Suspended Navigation -->
+      <ul class="nav-menu" id="suspendedNav" style="display: none;">
+        <li><a href="account.html" class="nav-link">Account</a></li>
+        <li><a href="support.html" class="nav-link">Support</a></li>
+      </ul>
+      
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <h1>Member Benefits</h1>
+      <p class="subtitle">Explore our comprehensive range of benefits designed to support your professional growth and wellbeing</p>
+    </div>
+  </header>
+
+  <!-- Member Notice (shown to non-members) -->
+  <div id="memberNotice" class="notice-banner" style="display: none;">
+    <div class="notice-banner-content">
+      <span class="notice-banner-icon">ℹ️</span>
+      <p><strong>Public View:</strong> You're viewing benefit descriptions. <a href="login.html">Log in</a> or <a href="register.html">register</a> to see redemption details.</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="container">
+      <!-- Category Filters -->
+      <div class="filter-pills" id="categoryFilters">
+        <a href="#all" class="filter-pill active" data-category="all">All Categories</a>
+        <a href="#professional" class="filter-pill" data-category="professional">Professional Development</a>
+        <a href="#insurance" class="filter-pill" data-category="insurance">Insurance</a>
+        <a href="#health" class="filter-pill" data-category="health">Health & Wellbeing</a>
+        <a href="#wellness" class="filter-pill" data-category="wellness">Wellness & Life</a>
+        <a href="#savings" class="filter-pill" data-category="savings">Lifestyle Savings</a>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div id="benefitsContainer">
+        <!-- Benefits will be loaded here by JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="benefits.html">Benefits</a></li>
+            <li><a href="support.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Membership Rules</a></li>
+            <li><a href="#">Articles of Association</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="support.html">FAQs</a></li>
+            <li><a href="#">#ask-ee-association</a></li>
+            <li><a href="mailto:support@ee-association.com">Email Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Slack: #ask-ee-association</li>
+            <li>Mon-Fri, 9am-5pm GMT</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Equal Experts Association Ltd. Company Limited by Guarantee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/demo-controls.js"></script>
+  
+  <script>
+    // Benefits page specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const benefitsContainer = document.getElementById('benefitsContainer');
+      const categoryFilters = document.getElementById('categoryFilters');
+      const memberNotice = document.getElementById('memberNotice');
+      const isLoggedIn = Auth.isLoggedIn();
+      
+      // Show notice if not logged in
+      if (!isLoggedIn) {
+        memberNotice.style.display = 'block';
+      }
+      
+      // Group benefits by category
+      const benefitsByCategory = {};
+      window.EEAData.BENEFITS.forEach(benefit => {
+        if (!benefitsByCategory[benefit.category]) {
+          benefitsByCategory[benefit.category] = {
+            name: benefit.categoryName,
+            benefits: []
+          };
+        }
+        benefitsByCategory[benefit.category].benefits.push(benefit);
+      });
+      
+      // Render benefits
+      function renderBenefits(category = 'all') {
+        let html = '';
+        
+        Object.keys(benefitsByCategory).forEach(cat => {
+          if (category !== 'all' && cat !== category) return;
+          
+          const categoryData = benefitsByCategory[cat];
+          
+          html += `
+            <section class="mb-8" id="${cat}">
+              <h2 class="mb-6">${categoryData.name}</h2>
+              <div class="grid grid-2" style="gap: var(--space-6);">
+          `;
+          
+          categoryData.benefits.forEach(benefit => {
+            html += `
+              <div class="benefit-card">
+                <div class="benefit-icon">${benefit.icon}</div>
+                <h3 class="benefit-title">${benefit.title}</h3>
+                <p class="benefit-description">${benefit.description}</p>
+                ${benefit.value ? `<span class="badge badge-info">${benefit.value}</span>` : ''}
+                
+                ${benefit.howItWorks ? `
+                  <div class="benefit-expandable">
+                    <button class="benefit-expand-btn" onclick="toggleBenefitDetails(this)">
+                      <span class="expand-icon">▶</span>
+                      <span class="expand-text">How does it work?</span>
+                    </button>
+                    <div class="benefit-expand-content" style="display: none;">
+                      <p>${benefit.howItWorks}</p>
+                    </div>
+                  </div>
+                ` : ''}
+                
+                ${isLoggedIn ? `
+                  <div class="benefit-details">
+                    <div class="benefit-details-title">How to Redeem</div>
+                    <p>${benefit.redemption}</p>
+                    <p class="mt-2"><strong>Provider:</strong> ${benefit.provider}</p>
+                  </div>
+                ` : `
+                  <div class="benefit-details" style="background: var(--gray-100);">
+                    <p class="text-gray"><a href="login.html">Log in</a> to see redemption details</p>
+                  </div>
+                `}
+              </div>
+            `;
+          });
+          
+          html += `
+              </div>
+            </section>
+          `;
+        });
+        
+        benefitsContainer.innerHTML = html;
+      }
+      
+      // Initial render
+      renderBenefits();
+      
+      // Handle filter clicks
+      categoryFilters.addEventListener('click', function(e) {
+        if (e.target.classList.contains('filter-pill')) {
+          e.preventDefault();
+          
+          // Update active state
+          categoryFilters.querySelectorAll('.filter-pill').forEach(pill => {
+            pill.classList.remove('active');
+          });
+          e.target.classList.add('active');
+          
+          // Filter benefits
+          const category = e.target.dataset.category;
+          renderBenefits(category);
+          
+          // Scroll to section if not "all"
+          if (category !== 'all') {
+            const section = document.getElementById(category);
+            if (section) {
+              section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }
+      });
+    });
+    
+    // Toggle benefit details
+    window.toggleBenefitDetails = function(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.expand-icon');
+      
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(90deg)';
+        button.classList.add('expanded');
+      } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+        button.classList.remove('expanded');
+      }
+    };
+  </script>
+</body>
+</html>
